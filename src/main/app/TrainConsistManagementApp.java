@@ -1,28 +1,43 @@
-package app;
+package app; // replace with your actual package, or remove if none
 
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
+import java.util.List;
 
 public class TrainConsistManagementApp {
 
-    private static final String TRAIN_ID_REGEX = "TRN-\\d{4}";
-    private static final String CARGO_CODE_REGEX = "PET-[A-Z]{2}";
+    // GoodsBogie class
+    public static class GoodsBogie {
+        private String type;
+        private String cargo;
 
-    public static boolean isValidTrainID(String trainId) {
-        if (trainId == null || trainId.isEmpty()) {
-            return false;
+        public GoodsBogie(String type, String cargo) {
+            this.type = type;
+            this.cargo = cargo;
         }
-        Pattern pattern = Pattern.compile(TRAIN_ID_REGEX);
-        Matcher matcher = pattern.matcher(trainId);
-        return matcher.matches();
+
+        public String getType() { return type; }
+        public String getCargo() { return cargo; }
     }
 
-    public static boolean isValidCargoCode(String cargoCode) {
-        if (cargoCode == null || cargoCode.isEmpty()) {
-            return false;
-        }
-        Pattern pattern = Pattern.compile(CARGO_CODE_REGEX);
-        Matcher matcher = pattern.matcher(cargoCode);
-        return matcher.matches();
+    // UC12: Safety Compliance Check
+    public static boolean isTrainSafetyCompliant(List<GoodsBogie> goodsBogies) {
+        return goodsBogies.stream()
+                .allMatch(bogie -> {
+                    if ("Cylindrical".equalsIgnoreCase(bogie.getType())) {
+                        return "Petroleum".equalsIgnoreCase(bogie.getCargo());
+                    }
+                    return true; // other bogies are flexible
+                });
+    }
+
+    // Demo main method
+    public static void main(String[] args) {
+        List<GoodsBogie> bogies = List.of(
+                new GoodsBogie("Cylindrical", "Petroleum"),
+                new GoodsBogie("Rectangular", "Coal"),
+                new GoodsBogie("Open", "Grain")
+        );
+
+        boolean isSafe = isTrainSafetyCompliant(bogies);
+        System.out.println("Train safety compliant: " + (isSafe ? "Yes" : "No"));
     }
 }

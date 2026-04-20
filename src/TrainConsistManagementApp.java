@@ -1,24 +1,47 @@
-import java.util.ArrayList;
-import java.util.List;
+public class TrainConsistManagementApp { class InvalidCapacityException extends Exception {
 
-public class TrainConsistManagementApp {
+    public InvalidCapacityException(String message) {
+        super(message);
+    }
+}
+    class PassengerBogie {
 
+        private String type;
+        private int capacity;
 
-    public static void main(String[] args) {
+        public PassengerBogie(String type, int capacity) throws InvalidCapacityException {
 
+            if (capacity <= 0) {
+                throw new InvalidCapacityException("Invalid bogie capacity: " + capacity);
+            }
 
-        System.out.println("=====================================");
-        System.out.println("=== Train Consist Management App ===");
-        System.out.println("=====================================\n");
+            this.type = type;
+            this.capacity = capacity;
+        }
 
+        public String getType() {
+            return type;
+        }
 
-        List<String> trainConsist = new ArrayList<>();
+        public int getCapacity() {
+            return capacity;
+        }
+    }
+    public class TrainConsistManagementSystem {
 
+        public static void main(String[] args) {
 
-        System.out.println("Train initialized successfully...");
-        System.out.println("Initial Bogie Count : " + trainConsist.size());
-        System.out.println("Current Train Consist : " + trainConsist);
+            try {
 
-        System.out.println("\nSystem ready for operations...");
+                PassengerBogie bogie1 = new PassengerBogie("Sleeper", 72);
+                PassengerBogie bogie2 = new PassengerBogie("AC Chair", -10);
+
+                System.out.println("Bogie created with capacity: " + bogie1.getCapacity());
+
+            } catch (InvalidCapacityException e) {
+
+                System.out.println("Error: " + e.getMessage());
+            }
+        }
     }
 }

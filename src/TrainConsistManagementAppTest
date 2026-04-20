@@ -1,0 +1,37 @@
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+public class TrainConsistManagementSystemTest {
+
+    @Test
+    public void testValidCapacity() throws InvalidCapacityException {
+
+        PassengerBogie bogie = new PassengerBogie("Sleeper", 72);
+
+        assertEquals(72, bogie.getCapacity());
+    }
+
+    @Test
+    public void testZeroCapacity() {
+
+        assertThrows(InvalidCapacityException.class, () -> {
+            new PassengerBogie("AC Chair", 0);
+        });
+    }
+
+    @Test
+    public void testNegativeCapacity() {
+
+        assertThrows(InvalidCapacityException.class, () -> {
+            new PassengerBogie("First Class", -5);
+        });
+    }
+
+    @Test
+    public void testLargeValidCapacity() throws InvalidCapacityException {
+
+        PassengerBogie bogie = new PassengerBogie("Sleeper", 100);
+
+        assertTrue(bogie.getCapacity() > 0);
+    }
+}
